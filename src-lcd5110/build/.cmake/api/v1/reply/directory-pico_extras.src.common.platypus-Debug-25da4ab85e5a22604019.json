@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "pico_extras/src/common/platypus",
+		"source" : "/Users/petrvanek/Documents/pico-extras-master/src/common/platypus"
+	}
+}

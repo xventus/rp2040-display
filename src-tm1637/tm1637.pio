@@ -1,0 +1,89 @@
+; Copyright (c)  2022 Vanek
+;
+; @file   tm1637.pio
+;
+; TM1637 support chip
+; Simplified version of the commands for the TM1637 chip. 
+; From fifo always loads 32 bits, which are processed in the following way:
+;
+; START pulse
+; CMD1 8 bit
+; ACK
+; STOP pulse
+; loop: START pulse
+;       CMD2+n 8 bit
+;       ACK
+;       jmp loop if data exists
+; STOP pulse
+; 
+; Only 4 bytes can be processed each time.  If the whole display is updated, 
+; it is necessary to send 2x4 bytes, 2 bytes being unnecessary.     
+; It does not support reading the state of the keys from the TM1637 chip. 
+
+.program tm1637
+
+.side_set 1 opt 
+.define TSTART 3
+
+.wrap_target
+start:
+
+   ; 32 bits    
+   pull block                    ; 1
+  
+   ; ------------ONE-------------------
+   ; *START1  pulse, command 1        
+   set x, 7                      ; 1 
+   set pins, 1  side 1 [TSTART]  ; TSTART + 1
+   set pins, 0  side 1           ; 1
+   set pins, 0  side 0           ; 1
+
+   ; CMD one - 8bits
+cmdOne:
+   out pins, 1    side 0         ; 1
+   nop            side 1         ; 1
+   jmp x-- cmdOne side 0         ; 1
+
+   ; ACK after command one
+   set pins, 0  side 0           ; 1
+   nop          side 1           ; 1
+   nop          side 0 [1]       ; 2
+
+   ; *STOP1 pulse, command 1
+   set pins, 0  side 1           ; 1
+   set pins, 1  side 1           ; 1
+
+   jmp !OSRE sendCmdData         ; 1
+
+   ; no more data 
+   jmp start                     ; 1
+
+   ; ------------ TWO + n --------------
+   ; next 8bits command 2 with address
+
+sendCmdData:
+   set x, 7                      ; 1  
+   ; *START2 pulse, command 2+
+   set pins, 1 side 1 [TSTART]   ; TSTART + 1
+   set pins, 0 side 1            ; 1
+   set pins, 0 side 0            ; 1
+   
+  ; CMD two + n 
+cmdData:
+   out pins, 1 side 0            ; 1
+   nop side 1                    ; 1
+   jmp x-- cmdData side 0        ; 1
+
+   ; ACK after command two
+   set pins, 0  side 0           ; 1
+   nop          side 1           ; 1
+   nop          side 0 [1]       ; 2
+   set x, 7                      ; 1
+   jmp !OSRE cmdData             ; 1 
+
+   ; *STOP2 pulse, command 2
+   set pins, 0  side 1           ; 1
+   set pins, 1  side 1           ; 1
+
+
+.wrap

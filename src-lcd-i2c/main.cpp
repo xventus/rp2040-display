@@ -16,7 +16,7 @@
 
 int main()
 {
-        stdio_init_all();
+    stdio_init_all();
 
     /*
         I2C0 – SDA	GP0/GP4/GP8/GP12/GP16/GP20

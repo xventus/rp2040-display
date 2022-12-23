@@ -6,6 +6,9 @@ Display control for Nokia 5110 graphic display. The program contains a demonstra
 
 Support for LCD character display connected via I2C interface. Support both 16x2 and 20x4 variants.
 
+# LED with TM1637
+
+A display composed of seven-segment displays most often in the number of four. The TM1637 can control up to six displays.  The possibility of keystroke scanning is not implemented. 
 
 will be continued ...
 

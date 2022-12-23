@@ -32,7 +32,7 @@ public:
      * @param clk - CLK pin, clock
      * @param light - LIGHT (BL) pin can be omitted by setting to 0, Backlight Supply it is advisable to reduce with a resistor of 220 to 330 ohms
      */
-    Lcd5110(spi_inst_t *spi,
+    explicit Lcd5110(spi_inst_t *spi,
             uint8_t rst = 8,
             uint8_t ce = 5,
             uint8_t dc = 4,

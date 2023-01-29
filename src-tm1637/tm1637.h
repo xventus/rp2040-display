@@ -17,7 +17,7 @@ class TM1637
 {
 
     // TODO: HEX byte and Address
-    
+
     /*
         Notes: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/digi_clock/TM1637.pdf
 
@@ -70,31 +70,38 @@ class TM1637
     static constexpr uint8_t _special[] = {0x40, 0x50, 0x6E, 0x80};                                                                        ///< -ry.
 
 public:
+    enum class DisplayVariant
+    {
+        FourDigits,
+        SixDigits
+    };
+
     /**
      * @brief ctor TM1637 object
-     * 
+     *
      * @param pio -  PIO instance
      * @param dio - DIO pin number
      * @param clk - CLK pin number
      */
-    explicit TM1637(PIO pio, uint8_t dio, uint8_t clk);
+    explicit TM1637(PIO pio, uint8_t dio, uint8_t clk, DisplayVariant disp);
 
     /**
-     * @brief SM and object initialization
-     * 
+     * @brief  SM and object initialization
+     *
+     * @param offset - when one display is already initialized it is possible to use the offset program for another SM
      */
-    void init();
+    void init(uint offset = 0);
 
     /**
      * @brief Clear screen
-     * 
-     * @return TM1637& 
+     *
+     * @return TM1637&
      */
-    TM1637& cls();
+    TM1637 &cls();
 
     /**
-     * @brief Displays hours and minutes on a 4-digit display with the option of displaying a tick as a seconds hand. 
-     * 
+     * @brief Displays hours and minutes on a 4-digit display with the option of displaying a tick as a seconds hand.
+     *
      * @param hours - value of hours
      * @param minutes - value of minutes
      * @param dot - show dot
@@ -102,43 +109,62 @@ public:
     void clock(uint8_t hours, uint8_t minutes, bool dot);
 
     /**
-     * @brief Complex print function for displaying integer values with a sign. 
-     * 
+     * @brief Complex print function for displaying integer values with a sign.
+     *
      * @param value - Integer value that should be displayed on the screen. If the value exceeds the display capabilities, the Err message is displayed
      * @param fromPos - Display from position. Position 0 is the leftmost position.
      * @param maxLen - Number of digits used for display, maximum for tm1637 is 6
      * @param leading - Display of leading zero
      * @param dot - Displaying the tuple at the digit position. If we don't want to display, we specify out of range value
-     * @return TM1637& 
+     * @return TM1637&
      */
-    TM1637& print(int32_t value, uint8_t fromPos = 0, uint8_t maxLen = 4, bool leading = true, uint8_t dot = 4);
-    
+    TM1637 &print(int32_t value, bool leading = true, uint8_t dot = 0);
+
     /**
-     * @brief Adjust the brightness of the display. 
-     * 
+     * @brief Adjust the brightness of the display.
+     *
      * @param value Value 0 - turns off the display. Maximum value is 7. 0xFF - Forwards the last known brightness value to the display.
-     * @return TM1637& 
+     * @return TM1637&
      */
-    TM1637& backlit(uint8_t value = 0xFF);
-    
-     /**
+    TM1637 &backlit(uint8_t value = 0xFF);
+
+    /**
      * @brief Displays the Err message
-     * 
-     * @param fromPos - Display from position. Position 0 is the leftmost position. 
-     * @param maxLen  - Number of characters displayed 
+     *
      */
-    void error(uint8_t fromPos = 0, uint8_t maxLen = 4);
-    
+    void error();
+
     /**
      * @brief Displays the RDY message
-     * 
-     * @param fromPos - Display from position. Position 0 is the leftmost position. 
-     * @param maxLen  - Number of characters displayed 
+     *
      */
-    void rdy(uint8_t fromPos = 0, uint8_t maxLen = 4);
+    void rdy();
+
+    /**
+     * @brief Get the Offset object for next display init(offset)
+     *
+     * @return uint
+     */
+    uint getOffset() const { return _offset; }
+
+    /**
+     * @brief   prints date, year only on 6-digit display 
+     * 
+     * @param day day
+     * @param month  month
+     * @param year  (00-99) only short year
+     */
+    void date(uint8_t day, uint8_t month, uint8_t year);
+
+    /**
+     * @brief prints the contents of the buffer. Each position corresponds to one position. 0-3 or 0-5
+     * 
+     * @param segments 
+     */
+    void writeSegments(const uint8_t segments[]);
 
 private:
-    void writeSegment(uint8_t from, const uint8_t segments[], uint8_t len);
+    void writeData(uint32_t data);
 
 private:
     uint8_t _clk{0};
@@ -148,4 +174,6 @@ private:
     PIO _pio{nullptr};
     uint8_t _bright{7};
     uint8_t _segments[6];
+    uint _offset{0};
+    DisplayVariant _disp;
 };

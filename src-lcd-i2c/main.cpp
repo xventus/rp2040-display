@@ -26,15 +26,19 @@ int main()
     */
  
     // 16x2 LCD display PIN 2 - SDA, PIN 3 - SCL on I2C1, address 0x27
-    LCDI2C lcd(i2c1, 2, 3, 0x27,2,16);
+    //LCDI2C lcd(i2c1, 2, 3, 0x27,2,16);
+    //LCDI2C lcd(i2c0, 20, 21, 0x27,2,16);
+    /*
     lcd.init();
     lcd.at(0,0).print("--- LCD 1602 ---");
     lcd.at(1,1).print("i2c interface");
     while(true) {};
-
+    */
     // 20x4 LCD display PIN 2 - SDA, PIN 3 - SCL on I2C1, address 0x27
-    /*
-    LCDI2C lcd(i2c1, 2, 3, 0x27,4,20);
+    
+    LCDI2C lcd(i2c1, 6, 7, 0x27,4,20);
+    //LCDI2C lcd(i2c1, 2, 3, 0x27,4,20);
+    //LCDI2C lcd(i2c0, 20, 21, 0x27,4,20);
     lcd.init();
     lcd.withWrap(true).print("A long text that demonstrates the flow of text to the next line.");
     sleep_ms(3000);
@@ -49,5 +53,5 @@ int main()
     lcd.at(1,3).print(" i2c interface ");
     lcd.at(3,16).print(">end");
     while(true) {};
-    */
+    
 }

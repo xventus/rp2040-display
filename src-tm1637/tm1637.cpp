@@ -200,8 +200,8 @@ void TM1637::clock(uint8_t hours, uint8_t minutes, bool dot)
     _segments[1] = _numHex[hh] | (dot ? _special[0x03] : 0);
     hh = minutes % 10;
     h = (minutes - hh) / 10;
-    _segments[2] = _numHex[hh];
-    _segments[3] = _numHex[h];
+    _segments[3] = _numHex[hh];
+    _segments[2] = _numHex[h];
   }
   else
   {

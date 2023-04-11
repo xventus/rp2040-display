@@ -20,7 +20,9 @@
     "cortex-debug.openocdPath": "",
     "files.associations": {
         "gpio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "limits": "cpp",
+        "new": "cpp"
     },
     "cortex-debug.variableUseNaturalFormat": true
 }

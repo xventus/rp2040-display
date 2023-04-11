@@ -17,14 +17,37 @@
 #include "generated/topaz.h"
 #include "generated/modeseven.h"
 
+#define LCD_SPI   spi0
+#define LCD_BIAS   3 
+#define LCD_CONTRAST  70
+#define LCD_RST_PIN 8
+#define LCD_CE_PIN 12
+#define LCD_DC_PIN 11
+#define LCD_DIN_PIN 7
+#define LCD_CLK_PIN 6
+#define LCD_LIGHT_PIN 10
+
 int main()
 {
     stdio_init_all();
 
+
+/*
+spi_inst_t *spi,
+            uint8_t rst = 8,
+            uint8_t ce = 5,
+            uint8_t dc = 4,
+            uint8_t din = 7,
+            uint8_t clk = 6,
+            uint8_t light = 10)
+*/
+
     // pin asigment
+    //Lcd5110 lcd(LCD_SPI, LCD_RST_PIN, LCD_CE_PIN, LCD_DC_PIN, LCD_DIN_PIN, LCD_CLK_PIN, LCD_LIGHT_PIN);
     Lcd5110 lcd(spi0, 8, 5, 4, 7, 6, 10);
 
     // initialize interface, sets bias and contrast
+    //lcd.init(4, 60); 
     lcd.init(3, 70);    // blue - usable for blue backlight
     // lcd.init(4,127); // white - setting for some types with white backlit 
     

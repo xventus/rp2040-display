@@ -19,8 +19,8 @@
 
 void Lcd5110::init(uint8_t bias, uint8_t contrast)
 {
-
-	spi_init(_spi, 3000000);
+                // 3000000
+	spi_init(_spi, 1000000);
 	gpio_set_function(_din, GPIO_FUNC_SPI);
 	gpio_set_function(_clk, GPIO_FUNC_SPI);
 

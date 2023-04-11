@@ -134,6 +134,18 @@ void TM1637::error()
   writeSegments(_segments);
 }
 
+
+void TM1637::stop()
+{
+  memset(_segments, 0, 6);
+  auto point = 0;
+  _segments[point++] = _numHex[0x05];
+  _segments[point++] = _special[0x04];
+  _segments[point++] = _special[0x05];
+  _segments[point++] = _special[0x06];
+  writeSegments(_segments);
+}
+
 void TM1637::rdy()
 {
   memset(_segments, 0, 6);

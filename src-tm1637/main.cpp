@@ -29,6 +29,11 @@ int main()
   tmdsp.backlit(7);
   tmdsp2.backlit(7);
 
+  tmdsp.stop();
+  tmdsp2.stop();
+
+  sleep_ms(1000);
+
   tmdsp.rdy();
   tmdsp2.rdy();
 

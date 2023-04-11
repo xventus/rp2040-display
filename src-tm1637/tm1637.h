@@ -67,7 +67,7 @@ class TM1637
     static constexpr uint8_t _displOff = 0x80;
     static constexpr uint8_t _maxDigit = 0xC0;
     static constexpr uint8_t _numHex[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71}; ///< 0-9A-F
-    static constexpr uint8_t _special[] = {0x40, 0x50, 0x6E, 0x80};                                                                        ///< -ry.
+    static constexpr uint8_t _special[] = {0x40, 0x50, 0x6E, 0x80, 0x78, 0x5C, 0x73};                                                      ///< -ry.toP
 
 public:
     enum class DisplayVariant
@@ -133,6 +133,12 @@ public:
      *
      */
     void error();
+
+    /**
+     * @brief Stop message
+     * 
+     */
+    void stop();
 
     /**
      * @brief Displays the RDY message
